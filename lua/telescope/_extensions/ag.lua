@@ -7,7 +7,7 @@ local utils = require("telescope.utils")
 
 local M = {}
 
-function M.ag(text_to_find)
+function M.csearch(text_to_find)
 	local default_opts = {
 		entry_maker = function(entry)
 			local split = vim.split(entry, ":")
@@ -45,7 +45,7 @@ function M.ag(text_to_find)
 	}
 	local opts = default_opts
 
-	local args = { "ag", text_to_find }
+	local args = { "csearch", text_to_find }
 	pickers.new(opts, {
 		prompt_title = "Silver Searcher",
 		finder = finders.new_oneshot_job(args, opts),
@@ -56,6 +56,6 @@ end
 
 return require("telescope").register_extension({
 	exports = {
-		search = M.ag,
+		search = M.csearch,
 	},
 })
