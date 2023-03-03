@@ -11,8 +11,12 @@ function M.csearch(text_to_find)
 	local default_opts = {
 		entry_maker = function(entry)
 			local split = vim.split(entry, ":")
-			local rel_filepath = split[1]
-			local abs_filepath = vim.fn.getcwd() .. "/" .. rel_filepath
+            local rel_filepath = split[1]
+            local cwd = vim.fn.getcwd()
+            if string.sub(split[1], 1, string.len(cwd)) == cwd then
+                rel_filepath = string.sub(split[1], string.len(cwd) + 2, -1)
+            end
+			local abs_filepath = split[1]
 			local line_num = tonumber(split[2])
 			return {
 				value = entry,
@@ -29,7 +33,7 @@ function M.csearch(text_to_find)
 					end
 				end,
 				ordinal = rel_filepath,
-                                filename = rel_filepath,
+                filename = rel_filepath,
 				path = abs_filepath,
 				lnum = line_num,
 			}
@@ -45,9 +49,9 @@ function M.csearch(text_to_find)
 	}
 	local opts = default_opts
 
-	local args = { "csearch", text_to_find }
+	local args = { "csearch", "-n", text_to_find }
 	pickers.new(opts, {
-		prompt_title = "Silver Searcher",
+		prompt_title = "CSearch",
 		finder = finders.new_oneshot_job(args, opts),
 		previewer = conf.grep_previewer(opts),
 		sorter = conf.file_sorter(opts),
