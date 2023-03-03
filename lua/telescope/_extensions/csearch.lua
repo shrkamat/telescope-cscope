@@ -51,7 +51,7 @@ function M.csearch(text_to_find)
 
 	local args = { "csearch", "-n", text_to_find }
 	pickers.new(opts, {
-		prompt_title = "CSearch",
+		prompt_title = "csearch -n " .. text_to_find,
 		finder = finders.new_oneshot_job(args, opts),
 		previewer = conf.grep_previewer(opts),
 		sorter = conf.file_sorter(opts),
